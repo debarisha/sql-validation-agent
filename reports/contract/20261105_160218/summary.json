@@ -1,0 +1,148 @@
+{
+  "table": "contract",
+  "mapping": "mappings/contract.yaml",
+  "server": "localhost",
+  "database": "ValidationSandbox",
+  "started": "2026-11-05T16:02:17",
+  "input": {
+    "source": {
+      "table": "src.Contract",
+      "exists": true,
+      "row_count": 9,
+      "columns": [
+        {
+          "name": "ContractID",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "CustomerID",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "StartDate",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "EndDate",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "Amount",
+          "type": "decimal(18,2)",
+          "nullable": true
+        },
+        {
+          "name": "Status",
+          "type": "nvarchar(20)",
+          "nullable": true
+        }
+      ],
+      "missing_columns": []
+    },
+    "target": {
+      "table": "tgt.Contract",
+      "exists": true,
+      "row_count": 10,
+      "columns": [
+        {
+          "name": "ContractID",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "CustomerID",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "StartDate",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "EndDate",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "Amount",
+          "type": "decimal(18,2)",
+          "nullable": true
+        },
+        {
+          "name": "Status",
+          "type": "nvarchar(20)",
+          "nullable": true
+        }
+      ],
+      "missing_columns": []
+    }
+  },
+  "checks": [
+    {
+      "file": "01_row_count.sql",
+      "check": "Row count",
+      "what": "Total rows, source vs target",
+      "pass_rule": "row_count_diff = 0",
+      "status": "FAIL",
+      "issues": 1,
+      "result": "source 9 / target 10 / diff -1",
+      "rows_returned": 1,
+      "seconds": 0.002
+    },
+    {
+      "file": "02_null_checks.sql",
+      "check": "NULL checks",
+      "what": "NULLs per column; required columns flagged",
+      "pass_rule": "0 NULLs in required columns",
+      "status": "FAIL",
+      "issues": 1,
+      "result": "target.CustomerID: 1 NULL",
+      "rows_returned": 12,
+      "seconds": 0.013
+    },
+    {
+      "file": "03_duplicate_checks.sql",
+      "check": "Duplicate keys",
+      "what": "Keys appearing more than once, per side",
+      "pass_rule": "No rows",
+      "status": "FAIL",
+      "issues": 1,
+      "result": "1 row(s) returned",
+      "rows_returned": 1,
+      "seconds": 0.003
+    },
+    {
+      "file": "04_missing_extra.sql",
+      "check": "Missing / extra",
+      "what": "Keys present on only one side",
+      "pass_rule": "No rows",
+      "status": "FAIL",
+      "issues": 2,
+      "result": "2 row(s) returned",
+      "rows_returned": 2,
+      "seconds": 0.007
+    },
+    {
+      "file": "05_column_compare.sql",
+      "check": "Column compare",
+      "what": "Differing values on matched keys",
+      "pass_rule": "No rows",
+      "status": "FAIL",
+      "issues": 4,
+      "result": "4 row(s) returned",
+      "rows_returned": 4,
+      "seconds": 0.012
+    }
+  ],
+  "overall": "FAIL",
+  "server_name": "PSDLAP332",
+  "server_version": "17.0.1145.4",
+  "login": "AzureAD\\DebarishaMukherjee",
+  "preflight_errors": [],
+  "finished": "2026-11-05T16:02:18"
+}

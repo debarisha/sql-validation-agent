@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.pyc
+
+# Editors / OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local Claude Code settings (per-user, may hold permissions)
+.claude/settings.local.json

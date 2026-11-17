@@ -1,0 +1,324 @@
+{
+  "run_id": "contract-20261105T162823",
+  "tool": "sql_validation_generator 1.1.0",
+  "table": "contract",
+  "mapping": "mappings/contract.yaml",
+  "mapping_sha256": "be6da53b266bc64a04de6bf0cef8847aea907e98c33390d0a3351f3a1cc57a10",
+  "scope": {
+    "source": "src.Contract",
+    "target": "tgt.Contract",
+    "key": [
+      "ContractID"
+    ],
+    "required": [
+      "ContractID",
+      "CustomerID",
+      "StartDate",
+      "Amount"
+    ],
+    "compared": [
+      "CustomerID",
+      "StartDate",
+      "EndDate",
+      "Amount",
+      "Status"
+    ],
+    "column_map": {}
+  },
+  "environment": {
+    "server_requested": "localhost",
+    "database": "ValidationSandbox",
+    "client_host": "PSDLAP332",
+    "python": "3.14.7",
+    "pyodbc": "5.3.0",
+    "odbc_driver": "ODBC Driver 18 for SQL Server",
+    "server_name": "PSDLAP332",
+    "server_version": "17.0.1145.4",
+    "product_level": "RTM",
+    "edition": "Enterprise Developer Edition (64-bit)",
+    "collation": "Latin1_General_CI_AI",
+    "login": "AzureAD\\DebarishaMukherjee",
+    "rcsi": "RCSI off"
+  },
+  "started": "2026-11-05T16:28:23+05:30",
+  "input": {
+    "source": {
+      "table": "src.Contract",
+      "exists": true,
+      "row_count": 9,
+      "columns": [
+        {
+          "name": "ContractID",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "CustomerID",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "StartDate",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "EndDate",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "Amount",
+          "type": "decimal(18,2)",
+          "nullable": true
+        },
+        {
+          "name": "Status",
+          "type": "nvarchar(20)",
+          "nullable": true
+        }
+      ],
+      "missing_columns": []
+    },
+    "target": {
+      "table": "tgt.Contract",
+      "exists": true,
+      "row_count": 10,
+      "columns": [
+        {
+          "name": "ContractID",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "CustomerID",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "StartDate",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "EndDate",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "Amount",
+          "type": "decimal(18,2)",
+          "nullable": true
+        },
+        {
+          "name": "Status",
+          "type": "nvarchar(20)",
+          "nullable": true
+        }
+      ],
+      "missing_columns": []
+    }
+  },
+  "schema_comparison": [
+    {
+      "source_column": "ContractID",
+      "target_column": "ContractID",
+      "mapping_type": "int",
+      "source_type": "int",
+      "target_type": "int",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": true,
+      "required": true,
+      "compared": false,
+      "status": "WARN",
+      "notes": "required in mapping but nullable in DB"
+    },
+    {
+      "source_column": "CustomerID",
+      "target_column": "CustomerID",
+      "mapping_type": "int",
+      "source_type": "int",
+      "target_type": "int",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": true,
+      "compared": true,
+      "status": "WARN",
+      "notes": "required in mapping but nullable in DB"
+    },
+    {
+      "source_column": "StartDate",
+      "target_column": "StartDate",
+      "mapping_type": "date",
+      "source_type": "date",
+      "target_type": "date",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": true,
+      "compared": true,
+      "status": "WARN",
+      "notes": "required in mapping but nullable in DB"
+    },
+    {
+      "source_column": "EndDate",
+      "target_column": "EndDate",
+      "mapping_type": "date",
+      "source_type": "date",
+      "target_type": "date",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": false,
+      "compared": true,
+      "status": "OK",
+      "notes": ""
+    },
+    {
+      "source_column": "Amount",
+      "target_column": "Amount",
+      "mapping_type": "decimal(18,2)",
+      "source_type": "decimal(18,2)",
+      "target_type": "decimal(18,2)",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": true,
+      "compared": true,
+      "status": "WARN",
+      "notes": "required in mapping but nullable in DB"
+    },
+    {
+      "source_column": "Status",
+      "target_column": "Status",
+      "mapping_type": "nvarchar(20)",
+      "source_type": "nvarchar(20)",
+      "target_type": "nvarchar(20)",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": false,
+      "compared": true,
+      "status": "OK",
+      "notes": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "VC-01",
+      "file": "01_row_count.sql",
+      "check": "Row count reconciliation",
+      "dimension": "Completeness",
+      "severity": "High",
+      "criterion": "row_count_diff = 0",
+      "sql_sha256": "36d40ffcf374ff327ef9e20085da4ab8612376d72cf25c3eab4dc497e1843124",
+      "status": "FAIL",
+      "defects": 1,
+      "observed": "source=9; target=10; diff=-1",
+      "rows_returned": 1,
+      "duration_ms": 3.3
+    },
+    {
+      "id": "VC-02",
+      "file": "02_null_checks.sql",
+      "check": "Mandatory attribute completeness",
+      "dimension": "Completeness",
+      "severity": "High",
+      "criterion": "null_count = 0 for every required column, on both sides",
+      "sql_sha256": "d74e8516c7aeb172833dace58c3fb6e26fb89bff1bf6a3db583024213a49932b",
+      "status": "FAIL",
+      "defects": 1,
+      "observed": "target.CustomerID=1 NULL",
+      "rows_returned": 12,
+      "duration_ms": 15.0
+    },
+    {
+      "id": "VC-03",
+      "file": "03_duplicate_checks.sql",
+      "check": "Primary key uniqueness",
+      "dimension": "Uniqueness",
+      "severity": "Critical",
+      "criterion": "0 rows returned",
+      "sql_sha256": "5207f09d1890f83a24703cb3620ea0d474d9cf546b1438d2c2a0229fd01bcd3b",
+      "status": "FAIL",
+      "defects": 1,
+      "observed": "1 duplicated key(s); 1 surplus row(s)",
+      "rows_returned": 1,
+      "duration_ms": 5.2
+    },
+    {
+      "id": "VC-04",
+      "file": "04_missing_extra.sql",
+      "check": "Key reconciliation (missing / extra)",
+      "dimension": "Consistency",
+      "severity": "Critical",
+      "criterion": "0 rows returned",
+      "sql_sha256": "6b7ba4e04ac5e0b58a9b48aa6ea2fdfe3cdd4b067e68a8776fa3c7ce37192894",
+      "status": "FAIL",
+      "defects": 2,
+      "observed": "missing_in_target=1; extra_in_target=1",
+      "rows_returned": 2,
+      "duration_ms": 7.9
+    },
+    {
+      "id": "VC-05",
+      "file": "05_column_compare.sql",
+      "check": "Attribute value reconciliation",
+      "dimension": "Accuracy",
+      "severity": "High",
+      "criterion": "0 rows returned",
+      "sql_sha256": "fd544fa79d929a7baedade31cfecd9da32690a45a9f1553f465e8b6232949692",
+      "status": "FAIL",
+      "defects": 4,
+      "observed": "4 attribute mismatch(es)",
+      "rows_returned": 4,
+      "duration_ms": 9.4
+    }
+  ],
+  "reconciliation": {
+    "src_distinct_keys": 9,
+    "tgt_distinct_keys": 9,
+    "matched_keys": 8,
+    "missing_in_target": 1,
+    "extra_in_target": 1,
+    "keys_with_mismatch": 3,
+    "exact_match_keys": 5,
+    "key_coverage_pct": 88.89,
+    "exact_match_pct": 55.56,
+    "attribute_cells_compared": 40,
+    "attribute_mismatches": 4,
+    "column_breakdown": [
+      {
+        "column": "CustomerID",
+        "mismatches": 1,
+        "mismatch_pct_of_matched": 12.5
+      },
+      {
+        "column": "StartDate",
+        "mismatches": 0,
+        "mismatch_pct_of_matched": 0.0
+      },
+      {
+        "column": "EndDate",
+        "mismatches": 1,
+        "mismatch_pct_of_matched": 12.5
+      },
+      {
+        "column": "Amount",
+        "mismatches": 1,
+        "mismatch_pct_of_matched": 12.5
+      },
+      {
+        "column": "Status",
+        "mismatches": 1,
+        "mismatch_pct_of_matched": 12.5
+      }
+    ]
+  },
+  "overall": "FAIL",
+  "preflight_errors": [],
+  "finished": "2026-11-05T16:28:23+05:30",
+  "duration_s": 0.39
+}

@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Validation Report</title>
+<style>
+:root { --bg:#f5f6f8; --fg:#1b1f24; --muted:#5f6b7a; --card:#fff; --line:#dfe3e8; --head:#1f3864; --accent:#2f5597;
+        --pass:#116329; --pass-bg:#d6f5df; --fail:#a40e26; --fail-bg:#fde2e1; --err:#7a4d00; --err-bg:#fff0c2;
+        --info:#1f5fa8; --info-bg:#e1ecfa; --crit:#8b1a10; --crit-bg:#f9d3cf; --high:#8a4500; --high-bg:#fde6cf; }
+@media (prefers-color-scheme: dark) { :root { --bg:#111418; --fg:#e6e9ed; --muted:#97a3b0; --card:#1a1e24; --line:#2c333c;
+        --head:#9bb7e8; --accent:#8fb0ea; --pass:#7ee2a0; --pass-bg:#16361f; --fail:#ff9a92; --fail-bg:#461a18;
+        --err:#ffd479; --err-bg:#3a2f10; --info:#8ab4f8; --info-bg:#1c2b44; --crit:#ffb0a6; --crit-bg:#4a1d18;
+        --high:#ffc58a; --high-bg:#42301a; } }
+* { box-sizing:border-box }
+body { margin:0; background:var(--bg); color:var(--fg); font:13.5px/1.55 "Segoe UI",-apple-system,Roboto,sans-serif; }
+main { max-width:1180px; margin:0 auto; padding:28px 16px 72px; }
+header { border-bottom:3px solid var(--head); padding-bottom:14px; margin-bottom:18px }
+.eyebrow { text-transform:uppercase; letter-spacing:.08em; font-size:11px; color:var(--muted); font-weight:600 }
+h1 { font-size:24px; margin:2px 0 6px; color:var(--head) }
+h2 { font-size:16px; margin:30px 0 10px; color:var(--head); border-bottom:1px solid var(--line); padding-bottom:6px }
+h2 .n { color:var(--muted); font-weight:500; margin-right:6px }
+h3 { font-size:14px; margin:0 0 10px } h4 { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:14px 0 6px }
+.verdict { display:flex; gap:12px; align-items:center; background:var(--card); border:1px solid var(--line);
+            border-left:5px solid var(--accent); border-radius:6px; padding:12px 14px; }
+.verdict.v-pass { border-left-color:var(--pass) } .verdict.v-fail { border-left-color:var(--fail) } .verdict.v-error { border-left-color:var(--err) }
+.tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin:14px 0 }
+.tile { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:10px 12px }
+.tile span { display:block; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em }
+.tile b { font-size:20px; font-variant-numeric:tabular-nums }
+.card, section.check { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:14px 16px; }
+section.check { margin-bottom:12px }
+.cid { font-family:Consolas,ui-monospace,monospace; color:var(--accent); margin-right:4px }
+.two { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:14px }
+.two > div { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:14px 16px; min-width:0 }
+.kv { display:grid; grid-template-columns:minmax(130px,190px) 1fr; gap:4px 14px; margin:0 }
+.kv dt { color:var(--muted); font-weight:600 } .kv dd { margin:0; min-width:0; overflow-wrap:anywhere }
+.badge { display:inline-block; padding:1px 8px; border-radius:3px; font-size:11px; font-weight:700; letter-spacing:.03em; text-transform:uppercase }
+.b-pass,.b-ok { color:var(--pass); background:var(--pass-bg) } .b-fail { color:var(--fail); background:var(--fail-bg) }
+.b-error,.b-warn { color:var(--err); background:var(--err-bg) } .b-info { color:var(--info); background:var(--info-bg) }
+.b-critical { color:var(--crit); background:var(--crit-bg) } .b-high { color:var(--high); background:var(--high-bg) }
+.b-medium { color:var(--err); background:var(--err-bg) }
+.scroll { overflow-x:auto }
+table { border-collapse:collapse; width:100%; font-size:12.5px }
+th, td { text-align:left; padding:6px 9px; border-bottom:1px solid var(--line); white-space:nowrap; vertical-align:top }
+thead th { background:var(--bg); color:var(--muted); font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.03em }
+td.num { text-align:right; font-variant-numeric:tabular-nums } td.null { color:var(--muted); font-style:italic }
+td.barcell { width:40%; min-width:100px } .bar { height:8px; background:var(--fail); border-radius:2px; min-width:1px }
+code, pre { font-family:Consolas,ui-monospace,monospace; font-size:12px }
+code.hash { font-size:11px; color:var(--muted) }
+pre { background:var(--bg); border:1px solid var(--line); border-radius:4px; padding:12px; overflow-x:auto; margin:8px 0 0 }
+details summary { cursor:pointer; color:var(--muted); margin-top:12px }
+.note { color:var(--muted); font-size:12px }
+.callout.err { background:var(--fail-bg); color:var(--fail); border-radius:6px; padding:10px 14px; margin:12px 0 }
+.toc { display:flex; flex-wrap:wrap; gap:6px 16px; font-size:12px; margin-top:10px } .toc a { color:var(--accent); text-decoration:none }
+footer { margin-top:36px; color:var(--muted); font-size:11.5px; border-top:1px solid var(--line); padding-top:10px }
+@media print { body { background:#fff } details { display:block } details > pre { display:block }
+  section.check, .card, .two > div { break-inside:avoid } }
+</style></head><body><main>
+<header>
+  <div class="eyebrow">Data Validation Report · Source-to-Target Reconciliation</div>
+  <h1>src.Contract → tgt.Contract</h1>
+  <div class="note">Run <code>contract-20261105T162823</code> · 2026-11-05T16:28:23+05:30 · PSDLAP332/ValidationSandbox</div>
+  <nav class="toc"><a href="#summary">1 Summary</a><a href="#metadata">2 Run metadata</a><a href="#scope">3 Scope</a>
+  <a href="#schema">4 Schema comparison</a><a href="#register">5 Check register</a><a href="#recon">6 Reconciliation</a>
+  <a href="#evidence">7 Evidence</a><a href="#appendix">A Comparison semantics</a></nav>
+</header>
+
+<h2 id="summary"><span class="n">1</span>Executive summary</h2>
+<div class="verdict v-fail"><span class="badge b-fail">FAIL</span><div>5 of 5 checks failed: VC-01 (High), VC-02 (High), VC-03 (Critical), VC-04 (Critical), VC-05 (High). The target is not reconciled with the source.</div></div>
+
+<div class="tiles"><div class="tile"><span>Checks passed</span><b>0/5</b></div><div class="tile"><span>Source rows</span><b>9</b></div><div class="tile"><span>Target rows</span><b>10</b></div><div class="tile"><span>Matched keys</span><b>8</b></div><div class="tile"><span>Missing / extra</span><b>1 / 1</b></div><div class="tile"><span>Attribute mismatches</span><b>4</b></div><div class="tile"><span>Exact-match rate</span><b>55.56%</b></div></div>
+
+<h2 id="metadata"><span class="n">2</span>Run metadata</h2>
+<div class="card"><dl class="kv"><dt>Run ID</dt><dd><code>contract-20261105T162823</code></dd><dt>Tool</dt><dd>sql_validation_generator 1.1.0</dd><dt>Started</dt><dd>2026-11-05T16:28:23+05:30</dd><dt>Finished</dt><dd>2026-11-05T16:28:23+05:30</dd><dt>Duration</dt><dd>0.39 s</dd><dt>Server</dt><dd>PSDLAP332</dd><dt>Database</dt><dd>ValidationSandbox</dd><dt>SQL Server</dt><dd>17.0.1145.4 RTM · Enterprise Developer Edition (64-bit)</dd><dt>Collation</dt><dd><code>Latin1_General_CI_AI</code></dd><dt>Isolation</dt><dd>RCSI off</dd><dt>Login</dt><dd>AzureAD\DebarishaMukherjee</dd><dt>ODBC driver</dt><dd>ODBC Driver 18 for SQL Server</dd><dt>Mapping</dt><dd><code>mappings/contract.yaml</code></dd><dt>Mapping SHA-256</dt><dd><code class='hash'>be6da53b266bc64a04de6bf0cef8847aea907e98c33390d0a3351f3a1cc57a10</code></dd></dl></div>
+
+<h2 id="scope"><span class="n">3</span>Validation scope</h2>
+<div class="card"><dl class="kv"><dt>Source object</dt><dd><code>src.Contract</code></dd><dt>Target object</dt><dd><code>tgt.Contract</code></dd><dt>Business key</dt><dd><code>ContractID</code></dd><dt>Required columns</dt><dd>ContractID, CustomerID, StartDate, Amount</dd><dt>Compared columns</dt><dd>CustomerID, StartDate, EndDate, Amount, Status</dd><dt>Column mapping</dt><dd>identity (same names)</dd></dl></div>
+
+<h2 id="schema"><span class="n">4</span>Schema comparison</h2>
+<div class="card"><div class="scroll"><table><thead><tr><th>Source column</th><th>Target column</th><th>Mapping type</th><th>Source type</th><th>Target type</th><th>Src nullable</th><th>Tgt nullable</th><th>Key</th><th>Required</th><th>Compared</th><th>status</th><th>Notes</th></tr></thead><tbody><tr><td>ContractID</td><td>ContractID</td><td>int</td><td>int</td><td>int</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td><td>N</td><td><span class="badge b-warn">WARN</span></td><td>required in mapping but nullable in DB</td></tr><tr><td>CustomerID</td><td>CustomerID</td><td>int</td><td>int</td><td>int</td><td>Y</td><td>Y</td><td>N</td><td>Y</td><td>Y</td><td><span class="badge b-warn">WARN</span></td><td>required in mapping but nullable in DB</td></tr><tr><td>StartDate</td><td>StartDate</td><td>date</td><td>date</td><td>date</td><td>Y</td><td>Y</td><td>N</td><td>Y</td><td>Y</td><td><span class="badge b-warn">WARN</span></td><td>required in mapping but nullable in DB</td></tr><tr><td>EndDate</td><td>EndDate</td><td>date</td><td>date</td><td>date</td><td>Y</td><td>Y</td><td>N</td><td>N</td><td>Y</td><td><span class="badge b-ok">OK</span></td><td></td></tr><tr><td>Amount</td><td>Amount</td><td>decimal(18,2)</td><td>decimal(18,2)</td><td>decimal(18,2)</td><td>Y</td><td>Y</td><td>N</td><td>Y</td><td>Y</td><td><span class="badge b-warn">WARN</span></td><td>required in mapping but nullable in DB</td></tr><tr><td>Status</td><td>Status</td><td>nvarchar(20)</td><td>nvarchar(20)</td><td>nvarchar(20)</td><td>Y</td><td>Y</td><td>N</td><td>N</td><td>Y</td><td><span class="badge b-ok">OK</span></td><td></td></tr></tbody></table></div>
+<p class="note">Types are read from INFORMATION_SCHEMA.COLUMNS at run time. WARN means a structural difference to review
+(it does not fail the run); ERROR means a mapped column is absent, and the checks are not executed.</p></div>
+
+<h2 id="register"><span class="n">5</span>Check register</h2>
+<div class="card"><div class="scroll"><table><thead><tr><th>ID</th><th>Check</th><th>DQ dimension</th><th>severity</th><th>Pass criterion</th><th>Observed</th><th>Defects</th><th>ms</th><th>status</th></tr></thead><tbody><tr><td>VC-01</td><td>Row count reconciliation</td><td>Completeness</td><td><span class="badge b-high">High</span></td><td>row_count_diff = 0</td><td>source=9; target=10; diff=-1</td><td class="num">1</td><td class="num">3.3</td><td><span class="badge b-fail">FAIL</span></td></tr><tr><td>VC-02</td><td>Mandatory attribute completeness</td><td>Completeness</td><td><span class="badge b-high">High</span></td><td>null_count = 0 for every required column, on both sides</td><td>target.CustomerID=1 NULL</td><td class="num">1</td><td class="num">15.0</td><td><span class="badge b-fail">FAIL</span></td></tr><tr><td>VC-03</td><td>Primary key uniqueness</td><td>Uniqueness</td><td><span class="badge b-critical">Critical</span></td><td>0 rows returned</td><td>1 duplicated key(s); 1 surplus row(s)</td><td class="num">1</td><td class="num">5.2</td><td><span class="badge b-fail">FAIL</span></td></tr><tr><td>VC-04</td><td>Key reconciliation (missing / extra)</td><td>Consistency</td><td><span class="badge b-critical">Critical</span></td><td>0 rows returned</td><td>missing_in_target=1; extra_in_target=1</td><td class="num">2</td><td class="num">7.9</td><td><span class="badge b-fail">FAIL</span></td></tr><tr><td>VC-05</td><td>Attribute value reconciliation</td><td>Accuracy</td><td><span class="badge b-high">High</span></td><td>0 rows returned</td><td>4 attribute mismatch(es)</td><td class="num">4</td><td class="num">9.4</td><td><span class="badge b-fail">FAIL</span></td></tr></tbody></table></div></div>
+
+<h2 id="recon"><span class="n">6</span>Reconciliation metrics</h2>
+<div class="two"><div><h3>Key and row metrics</h3><div class="scroll"><table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>Source rows / distinct keys</td><td>9 / 9</td></tr><tr><td>Target rows / distinct keys</td><td>10 / 9</td></tr><tr><td>Matched keys</td><td class="num">8</td></tr><tr><td>Missing in target (source only)</td><td class="num">1</td></tr><tr><td>Extra in target (target only)</td><td class="num">1</td></tr><tr><td>Matched keys with ≥1 attribute mismatch</td><td class="num">3</td></tr><tr><td>Exact-match keys</td><td class="num">5</td></tr><tr><td>Key coverage (matched ÷ source keys)</td><td>88.89%</td></tr><tr><td>Exact-match rate (exact ÷ source keys)</td><td>55.56%</td></tr><tr><td>Attribute cells compared</td><td class="num">40</td></tr><tr><td>Attribute mismatches</td><td class="num">4</td></tr></tbody></table></div></div><div><h3>Attribute mismatches by column</h3><div class="scroll"><table><thead><tr><th>Column</th><th>Mismatches</th><th>% of matched</th><th></th></tr></thead><tbody><tr><td><code>CustomerID</code></td><td class="num">1</td><td class="num">12.5%</td><td class="barcell"><div class="bar" style="width:100.0%"></div></td></tr><tr><td><code>StartDate</code></td><td class="num">0</td><td class="num">0.0%</td><td class="barcell"><div class="bar" style="width:0.0%"></div></td></tr><tr><td><code>EndDate</code></td><td class="num">1</td><td class="num">12.5%</td><td class="barcell"><div class="bar" style="width:100.0%"></div></td></tr><tr><td><code>Amount</code></td><td class="num">1</td><td class="num">12.5%</td><td class="barcell"><div class="bar" style="width:100.0%"></div></td></tr><tr><td><code>Status</code></td><td class="num">1</td><td class="num">12.5%</td><td class="barcell"><div class="bar" style="width:100.0%"></div></td></tr></tbody></table></div></div></div>
+
+<h2 id="evidence"><span class="n">7</span>Check evidence</h2>
+<section class="check" id="VC-01"><h3><span class="cid">VC-01</span> Row count reconciliation <span class="badge b-high">High</span></h3><dl class="kv"><dt>Objective</dt><dd>Confirm the target holds the same number of records as the source.</dd><dt>Method</dt><dd>COUNT_BIG(*) on source and target; difference = source - target.</dd><dt>Pass criterion</dt><dd><code>row_count_diff = 0</code></dd><dt>Observed</dt><dd>source=9; target=10; diff=-1</dd><dt>Result</dt><dd><span class="badge b-fail">FAIL</span> &nbsp;<span class="note">1 row(s) · 3.3 ms</span></dd></dl><h4>Evidence</h4><div class="scroll"><table><thead><tr><th>src_row_count</th><th>tgt_row_count</th><th>row_count_diff</th><th>status</th></tr></thead><tbody><tr><td class="num">9</td><td class="num">10</td><td class="num">-1</td><td><span class="badge b-fail">FAIL</span></td></tr></tbody></table></div><details><summary>Executed SQL: <code>01_row_count.sql</code> · SHA-256 <code class="hash">36d40ffcf374ff32…</code></summary><pre>/* 01_row_count.sql
+   Mapping : mappings/contract.yaml  (dialect: sqlserver)
+   Source  : src.Contract
+   Target  : tgt.Contract
+   Check   : Total row count, source vs target.
+   PASS    : One row with row_count_diff = 0 (status = &#x27;PASS&#x27;).
+   NOTE    : Generated by generator/generate_sql.py. Not executed. Do not edit by hand;
+             change the mapping and regenerate. */
+
+SELECT
+    s.src_row_count,
+    t.tgt_row_count,
+    s.src_row_count - t.tgt_row_count AS row_count_diff,
+    CASE WHEN s.src_row_count = t.tgt_row_count THEN &#x27;PASS&#x27; ELSE &#x27;FAIL&#x27; END AS status
+FROM       (SELECT COUNT_BIG(*) AS src_row_count FROM [src].[Contract]) AS s
+CROSS JOIN (SELECT COUNT_BIG(*) AS tgt_row_count FROM [tgt].[Contract]) AS t;
+</pre></details></section><section class="check" id="VC-02"><h3><span class="cid">VC-02</span> Mandatory attribute completeness <span class="badge b-high">High</span></h3><dl class="kv"><dt>Objective</dt><dd>Confirm columns declared required in the mapping contain no NULL values on either side.</dd><dt>Method</dt><dd>Conditional SUM per column on each table, unpivoted via CROSS APPLY (VALUES ...). Optional columns are profiled for information only.</dd><dt>Pass criterion</dt><dd><code>null_count = 0 for every required column, on both sides</code></dd><dt>Observed</dt><dd>target.CustomerID=1 NULL</dd><dt>Result</dt><dd><span class="badge b-fail">FAIL</span> &nbsp;<span class="note">12 row(s) · 15.0 ms</span></dd></dl><h4>Evidence</h4><div class="scroll"><table><thead><tr><th>side</th><th>column_name</th><th>is_required</th><th>null_count</th><th>total_rows</th><th>status</th></tr></thead><tbody><tr><td>source</td><td>Amount</td><td class="num">1</td><td class="num">0</td><td class="num">9</td><td><span class="badge b-pass">PASS</span></td></tr><tr><td>source</td><td>ContractID</td><td class="num">1</td><td class="num">0</td><td class="num">9</td><td><span class="badge b-pass">PASS</span></td></tr><tr><td>source</td><td>CustomerID</td><td class="num">1</td><td class="num">0</td><td class="num">9</td><td><span class="badge b-pass">PASS</span></td></tr><tr><td>source</td><td>StartDate</td><td class="num">1</td><td class="num">0</td><td class="num">9</td><td><span class="badge b-pass">PASS</span></td></tr><tr><td>source</td><td>EndDate</td><td class="num">0</td><td class="num">3</td><td class="num">9</td><td><span class="badge b-info">INFO</span></td></tr><tr><td>source</td><td>Status</td><td class="num">0</td><td class="num">1</td><td class="num">9</td><td><span class="badge b-info">INFO</span></td></tr><tr><td>target</td><td>Amount</td><td class="num">1</td><td class="num">0</td><td class="num">10</td><td><span class="badge b-pass">PASS</span></td></tr><tr><td>target</td><td>ContractID</td><td class="num">1</td><td class="num">0</td><td class="num">10</td><td><span class="badge b-pass">PASS</span></td></tr><tr><td>target</td><td>CustomerID</td><td class="num">1</td><td class="num">1</td><td class="num">10</td><td><span class="badge b-fail">FAIL</span></td></tr><tr><td>target</td><td>StartDate</td><td class="num">1</td><td class="num">0</td><td class="num">10</td><td><span class="badge b-pass">PASS</span></td></tr><tr><td>target</td><td>EndDate</td><td class="num">0</td><td class="num">2</td><td class="num">10</td><td><span class="badge b-info">INFO</span></td></tr><tr><td>target</td><td>Status</td><td class="num">0</td><td class="num">1</td><td class="num">10</td><td><span class="badge b-info">INFO</span></td></tr></tbody></table></div><details><summary>Executed SQL: <code>02_null_checks.sql</code> · SHA-256 <code class="hash">d74e8516c7aeb172…</code></summary><pre>/* 02_null_checks.sql
+   Mapping : mappings/contract.yaml  (dialect: sqlserver)
+   Source  : src.Contract
+   Target  : tgt.Contract
+   Check   : NULL count per column on each side.
+   PASS    : Every row with is_required = 1 has null_count = 0 (status = &#x27;PASS&#x27;).
+   NOTE    : Generated by generator/generate_sql.py. Not executed. Do not edit by hand;
+             change the mapping and regenerate.
+             Required: ContractID, CustomerID, StartDate, Amount
+             Optional (INFO only): EndDate, Status */
+
+WITH src_nulls AS (
+    SELECT
+        COUNT_BIG(*) AS total_rows,
+        SUM(CASE WHEN [ContractID] IS NULL THEN 1 ELSE 0 END) AS c0,
+        SUM(CASE WHEN [CustomerID] IS NULL THEN 1 ELSE 0 END) AS c1,
+        SUM(CASE WHEN [StartDate] IS NULL THEN 1 ELSE 0 END) AS c2,
+        SUM(CASE WHEN [EndDate] IS NULL THEN 1 ELSE 0 END) AS c3,
+        SUM(CASE WHEN [Amount] IS NULL THEN 1 ELSE 0 END) AS c4,
+        SUM(CASE WHEN [Status] IS NULL THEN 1 ELSE 0 END) AS c5
+    FROM [src].[Contract]
+),
+tgt_nulls AS (
+    SELECT
+        COUNT_BIG(*) AS total_rows,
+        SUM(CASE WHEN [ContractID] IS NULL THEN 1 ELSE 0 END) AS c0,
+        SUM(CASE WHEN [CustomerID] IS NULL THEN 1 ELSE 0 END) AS c1,
+        SUM(CASE WHEN [StartDate] IS NULL THEN 1 ELSE 0 END) AS c2,
+        SUM(CASE WHEN [EndDate] IS NULL THEN 1 ELSE 0 END) AS c3,
+        SUM(CASE WHEN [Amount] IS NULL THEN 1 ELSE 0 END) AS c4,
+        SUM(CASE WHEN [Status] IS NULL THEN 1 ELSE 0 END) AS c5
+    FROM [tgt].[Contract]
+),
+unpivoted AS (
+    SELECT &#x27;source&#x27; AS side, v.column_name, v.is_required, ISNULL(v.null_count, 0) AS null_count, n.total_rows
+    FROM src_nulls AS n
+    CROSS APPLY (VALUES
+        (&#x27;ContractID&#x27;, 1, n.c0),
+        (&#x27;CustomerID&#x27;, 1, n.c1),
+        (&#x27;StartDate&#x27;, 1, n.c2),
+        (&#x27;EndDate&#x27;, 0, n.c3),
+        (&#x27;Amount&#x27;, 1, n.c4),
+        (&#x27;Status&#x27;, 0, n.c5)
+    ) AS v(column_name, is_required, null_count)
+    UNION ALL
+    SELECT &#x27;target&#x27; AS side, v.column_name, v.is_required, ISNULL(v.null_count, 0) AS null_count, n.total_rows
+    FROM tgt_nulls AS n
+    CROSS APPLY (VALUES
+        (&#x27;ContractID&#x27;, 1, n.c0),
+        (&#x27;CustomerID&#x27;, 1, n.c1),
+        (&#x27;StartDate&#x27;, 1, n.c2),
+        (&#x27;EndDate&#x27;, 0, n.c3),
+        (&#x27;Amount&#x27;, 1, n.c4),
+        (&#x27;Status&#x27;, 0, n.c5)
+    ) AS v(column_name, is_required, null_count)
+)
+SELECT
+    side,
+    column_name,
+    is_required,
+    null_count,
+    total_rows,
+    CASE
+        WHEN is_required = 1 AND null_count &gt; 0 THEN &#x27;FAIL&#x27;
+        WHEN is_required = 1                    THEN &#x27;PASS&#x27;
+        ELSE &#x27;INFO&#x27;
+    END AS status
+FROM unpivoted
+ORDER BY side, is_required DESC, column_name;
+</pre></details></section><section class="check" id="VC-03"><h3><span class="cid">VC-03</span> Primary key uniqueness <span class="badge b-critical">Critical</span></h3><dl class="kv"><dt>Objective</dt><dd>Confirm each business key occurs at most once in source and in target.</dd><dt>Method</dt><dd>GROUP BY key columns HAVING COUNT_BIG(*) &gt; 1, evaluated independently per side.</dd><dt>Pass criterion</dt><dd><code>0 rows returned</code></dd><dt>Observed</dt><dd>1 duplicated key(s); 1 surplus row(s)</dd><dt>Result</dt><dd><span class="badge b-fail">FAIL</span> &nbsp;<span class="note">1 row(s) · 5.2 ms</span></dd></dl><h4>Evidence</h4><div class="scroll"><table><thead><tr><th>side</th><th>ContractID</th><th>occurrences</th></tr></thead><tbody><tr><td>target</td><td class="num">3</td><td class="num">2</td></tr></tbody></table></div><details><summary>Executed SQL: <code>03_duplicate_checks.sql</code> · SHA-256 <code class="hash">5207f09d1890f83a…</code></summary><pre>/* 03_duplicate_checks.sql
+   Mapping : mappings/contract.yaml  (dialect: sqlserver)
+   Source  : src.Contract
+   Target  : tgt.Contract
+   Check   : Key values (ContractID) that appear more than once, on each side.
+   PASS    : No rows returned.
+   NOTE    : Generated by generator/generate_sql.py. Not executed. Do not edit by hand;
+             change the mapping and regenerate.
+             NULL keys are grouped together; they are also reported by 02_null_checks.sql. */
+
+SELECT &#x27;source&#x27; AS side, [ContractID], COUNT_BIG(*) AS occurrences
+FROM [src].[Contract]
+GROUP BY [ContractID]
+HAVING COUNT_BIG(*) &gt; 1
+
+UNION ALL
+
+SELECT &#x27;target&#x27; AS side, [ContractID], COUNT_BIG(*) AS occurrences
+FROM [tgt].[Contract]
+GROUP BY [ContractID]
+HAVING COUNT_BIG(*) &gt; 1
+
+ORDER BY side, [ContractID];
+</pre></details></section><section class="check" id="VC-04"><h3><span class="cid">VC-04</span> Key reconciliation (missing / extra) <span class="badge b-critical">Critical</span></h3><dl class="kv"><dt>Objective</dt><dd>Confirm the set of business keys is identical in source and target.</dd><dt>Method</dt><dd>FULL OUTER JOIN of DISTINCT non-NULL keys; unmatched source keys = MISSING_IN_TARGET, unmatched target keys = EXTRA_IN_TARGET.</dd><dt>Pass criterion</dt><dd><code>0 rows returned</code></dd><dt>Observed</dt><dd>missing_in_target=1; extra_in_target=1</dd><dt>Result</dt><dd><span class="badge b-fail">FAIL</span> &nbsp;<span class="note">2 row(s) · 7.9 ms</span></dd></dl><h4>Evidence</h4><div class="scroll"><table><thead><tr><th>ContractID</th><th>issue</th></tr></thead><tbody><tr><td class="num">11</td><td>EXTRA_IN_TARGET</td></tr><tr><td class="num">9</td><td>MISSING_IN_TARGET</td></tr></tbody></table></div><details><summary>Executed SQL: <code>04_missing_extra.sql</code> · SHA-256 <code class="hash">6b7ba4e04ac5e0b5…</code></summary><pre>/* 04_missing_extra.sql
+   Mapping : mappings/contract.yaml  (dialect: sqlserver)
+   Source  : src.Contract
+   Target  : tgt.Contract
+   Check   : Keys (ContractID) that exist on only one side. MISSING_IN_TARGET = source only; EXTRA_IN_TARGET = target only.
+   PASS    : No rows returned.
+   NOTE    : Generated by generator/generate_sql.py. Not executed. Do not edit by hand;
+             change the mapping and regenerate.
+             DISTINCT keys are used so duplicates (see 03) do not repeat rows here.
+             Rows with a NULL key never match; they are reported by 02_null_checks.sql. */
+
+WITH s AS (SELECT DISTINCT [ContractID] FROM [src].[Contract] WHERE [ContractID] IS NOT NULL),
+     t AS (SELECT DISTINCT [ContractID] FROM [tgt].[Contract] WHERE [ContractID] IS NOT NULL)
+SELECT
+    COALESCE(s.[ContractID], t.[ContractID]) AS [ContractID],
+    CASE WHEN t.[ContractID] IS NULL THEN &#x27;MISSING_IN_TARGET&#x27;
+         ELSE &#x27;EXTRA_IN_TARGET&#x27; END AS issue
+FROM s
+FULL OUTER JOIN t
+    ON s.[ContractID] = t.[ContractID]
+WHERE s.[ContractID] IS NULL
+   OR t.[ContractID] IS NULL
+ORDER BY issue, [ContractID];
+</pre></details></section><section class="check" id="VC-05"><h3><span class="cid">VC-05</span> Attribute value reconciliation <span class="badge b-high">High</span></h3><dl class="kv"><dt>Objective</dt><dd>Confirm every compared attribute holds the same value in source and target for matched keys.</dd><dt>Method</dt><dd>INNER JOIN on key; attributes unpivoted to (column, src_value, tgt_value) and compared NULL-safely with EXISTS (SELECT src EXCEPT SELECT tgt).</dd><dt>Pass criterion</dt><dd><code>0 rows returned</code></dd><dt>Observed</dt><dd>4 attribute mismatch(es)</dd><dt>Result</dt><dd><span class="badge b-fail">FAIL</span> &nbsp;<span class="note">4 row(s) · 9.4 ms</span></dd></dl><h4>Evidence</h4><div class="scroll"><table><thead><tr><th>ContractID</th><th>column_name</th><th>src_value</th><th>tgt_value</th></tr></thead><tbody><tr><td class="num">6</td><td>CustomerID</td><td>106</td><td class="null">NULL</td></tr><tr><td class="num">7</td><td>Amount</td><td>100.00</td><td>150.00</td></tr><tr><td class="num">8</td><td>EndDate</td><td class="null">NULL</td><td>2025-07-31</td></tr><tr><td class="num">8</td><td>Status</td><td>Pending</td><td>Closed</td></tr></tbody></table></div><details><summary>Executed SQL: <code>05_column_compare.sql</code> · SHA-256 <code class="hash">fd544fa79d929a7b…</code></summary><pre>/* 05_column_compare.sql
+   Mapping : mappings/contract.yaml  (dialect: sqlserver)
+   Source  : src.Contract
+   Target  : tgt.Contract
+   Check   : For keys on both sides, compares CustomerID, StartDate, EndDate, Amount, Status value by value.
+   PASS    : No rows returned. Each returned row is one (key, column) mismatch.
+   NOTE    : Generated by generator/generate_sql.py. Not executed. Do not edit by hand;
+             change the mapping and regenerate.
+             NULL-safe: NULL vs NULL matches; NULL vs a value is a mismatch.
+             Values compared as NVARCHAR: dates use ISO style 121, float/real use style 3.
+             Trailing spaces are ignored and case follows the database collation.
+             If keys are duplicated (see 03), result rows multiply. */
+
+SELECT
+    s.[ContractID],
+    v.column_name,
+    v.src_value,
+    v.tgt_value
+FROM [src].[Contract] AS s
+INNER JOIN [tgt].[Contract] AS t
+    ON s.[ContractID] = t.[ContractID]
+CROSS APPLY (VALUES
+    (&#x27;CustomerID&#x27;, CAST(s.[CustomerID] AS NVARCHAR(MAX)), CAST(t.[CustomerID] AS NVARCHAR(MAX))),
+    (&#x27;StartDate&#x27;,  CONVERT(NVARCHAR(40), s.[StartDate], 121), CONVERT(NVARCHAR(40), t.[StartDate], 121)),
+    (&#x27;EndDate&#x27;,    CONVERT(NVARCHAR(40), s.[EndDate], 121), CONVERT(NVARCHAR(40), t.[EndDate], 121)),
+    (&#x27;Amount&#x27;,     CAST(s.[Amount] AS NVARCHAR(MAX)), CAST(t.[Amount] AS NVARCHAR(MAX))),
+    (&#x27;Status&#x27;,     CAST(s.[Status] AS NVARCHAR(MAX)), CAST(t.[Status] AS NVARCHAR(MAX)))
+) AS v(column_name, src_value, tgt_value)
+WHERE EXISTS (SELECT v.src_value EXCEPT SELECT v.tgt_value)   -- NULL-safe &quot;is different&quot;
+ORDER BY s.[ContractID], v.column_name;
+</pre></details></section>
+
+<h2 id="appendix"><span class="n">A</span>Comparison semantics and limitations</h2>
+<div class="card"><dl class="kv"><dt>Key matching</dt><dd>Equality on all key columns. Rows with a NULL in any key column are excluded from VC-04/VC-05 and surface in VC-02.</dd><dt>NULL handling</dt><dd>NULL = NULL is treated as a match; NULL vs a value is a mismatch (EXCEPT semantics).</dd><dt>Value normalisation</dt><dd>Values are cast to NVARCHAR before comparison: date/time types use CONVERT style 121 (ISO 8601, full precision), float/real use style 3 (17 significant digits), other types use CAST to NVARCHAR(MAX).</dd><dt>String comparison</dt><dd>Governed by the database collation (see Run metadata). Trailing spaces are ignored per ANSI padding rules; case sensitivity depends on the collation.</dd><dt>Duplicate keys</dt><dd>Duplicated keys multiply join output in VC-05; resolve VC-03 findings before interpreting VC-05.</dd><dt>Isolation</dt><dd>Statements run under the session default isolation level (READ COMMITTED unless RCSI is on). Concurrent loads during the run can produce transient differences.</dd></dl></div>
+
+<footer>Generated by sql_validation_generator 1.1.0 on PSDLAP332 (Python 3.14.7, pyodbc 5.3.0).
+All statements are read-only SELECTs. Evidence tables are truncated to 200 rows; complete result sets are in
+results.xlsx. Machine-readable output: summary.json.</footer>
+</main></body></html>

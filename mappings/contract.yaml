@@ -1,0 +1,22 @@
+# Mapping for Contract validation.
+# TODO: The column names and types below are PLACEHOLDERS. Replace them with the real
+#       Contract columns, then regenerate generated_sql/contract/.
+table: contract
+dialect: sqlserver            # T-SQL, SQL Server 2016+
+source: src.Contract
+target: tgt.Contract
+
+key:                          # TODO: real primary/business key
+  - ContractID
+
+columns:                      # TODO: real columns and types
+  - { name: ContractID, type: int,           required: true,  compare: false }   # key, not compared
+  - { name: CustomerID, type: int,           required: true,  compare: true }
+  - { name: StartDate,  type: date,          required: true,  compare: true }
+  - { name: EndDate,    type: date,          required: false, compare: true }
+  - { name: Amount,     type: "decimal(18,2)", required: true,  compare: true }
+  - { name: Status,     type: "nvarchar(20)",  required: false, compare: true }
+
+# Source and target use the same column names. If a column is renamed in the target, map it here:
+# column_map:
+#   SrcColumnName: TgtColumnName

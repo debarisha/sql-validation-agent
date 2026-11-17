@@ -1,0 +1,441 @@
+{
+  "run_id": "invoice-20261111T164927",
+  "tool": "sql_validation_generator 1.1.0",
+  "table": "invoice",
+  "mapping": "mappings/invoice.yaml",
+  "mapping_sha256": "927ddc65ea66aeb139935b04d9a2ae4b9324d07b3b01fd413cdbaff15c96107d",
+  "scope": {
+    "source": "src.Invoice",
+    "target": "tgt.Invoice",
+    "key": [
+      "InvoiceID"
+    ],
+    "required": [
+      "InvoiceID",
+      "CustomerNo",
+      "InvoiceDate",
+      "Amount",
+      "Currency"
+    ],
+    "compared": [
+      "CustomerNo",
+      "InvoiceDate",
+      "DueDate",
+      "Amount",
+      "Currency",
+      "Status",
+      "Notes",
+      "ExchangeRate"
+    ],
+    "column_map": {
+      "CustomerNo": "CustomerNumber"
+    }
+  },
+  "environment": {
+    "server_requested": "localhost",
+    "database": "ValidationSandbox",
+    "client_host": "PSDLAP332",
+    "python": "3.14.7",
+    "pyodbc": "5.3.0",
+    "odbc_driver": "ODBC Driver 18 for SQL Server",
+    "server_name": "PSDLAP332",
+    "server_version": "17.0.1145.4",
+    "product_level": "RTM",
+    "edition": "Enterprise Developer Edition (64-bit)",
+    "collation": "Latin1_General_CI_AI",
+    "login": "AzureAD\\DebarishaMukherjee",
+    "rcsi": "RCSI off"
+  },
+  "started": "2026-11-11T16:49:27+05:30",
+  "input": {
+    "source": {
+      "table": "src.Invoice",
+      "exists": true,
+      "row_count": 5001,
+      "columns": [
+        {
+          "name": "InvoiceID",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "CustomerNo",
+          "type": "varchar(20)",
+          "nullable": true
+        },
+        {
+          "name": "InvoiceDate",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "DueDate",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "Amount",
+          "type": "decimal(18,2)",
+          "nullable": true
+        },
+        {
+          "name": "Currency",
+          "type": "char(3)",
+          "nullable": true
+        },
+        {
+          "name": "Status",
+          "type": "nvarchar(20)",
+          "nullable": true
+        },
+        {
+          "name": "Notes",
+          "type": "nvarchar(200)",
+          "nullable": true
+        },
+        {
+          "name": "ExchangeRate",
+          "type": "float",
+          "nullable": true
+        },
+        {
+          "name": "UpdatedAt",
+          "type": "datetime2",
+          "nullable": true
+        }
+      ],
+      "missing_columns": []
+    },
+    "target": {
+      "table": "tgt.Invoice",
+      "exists": true,
+      "row_count": 4989,
+      "columns": [
+        {
+          "name": "InvoiceID",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "CustomerNumber",
+          "type": "varchar(20)",
+          "nullable": true
+        },
+        {
+          "name": "InvoiceDate",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "DueDate",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "Amount",
+          "type": "decimal(18,2)",
+          "nullable": true
+        },
+        {
+          "name": "Currency",
+          "type": "char(3)",
+          "nullable": true
+        },
+        {
+          "name": "Status",
+          "type": "nvarchar(20)",
+          "nullable": true
+        },
+        {
+          "name": "Notes",
+          "type": "nvarchar(200)",
+          "nullable": true
+        },
+        {
+          "name": "ExchangeRate",
+          "type": "float",
+          "nullable": true
+        },
+        {
+          "name": "UpdatedAt",
+          "type": "datetime2",
+          "nullable": true
+        }
+      ],
+      "missing_columns": []
+    }
+  },
+  "schema_comparison": [
+    {
+      "source_column": "InvoiceID",
+      "target_column": "InvoiceID",
+      "mapping_type": "int",
+      "source_type": "int",
+      "target_type": "int",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": true,
+      "required": true,
+      "compared": false,
+      "status": "WARN",
+      "notes": "required in mapping but nullable in DB"
+    },
+    {
+      "source_column": "CustomerNo",
+      "target_column": "CustomerNumber",
+      "mapping_type": "varchar(20)",
+      "source_type": "varchar(20)",
+      "target_type": "varchar(20)",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": true,
+      "compared": true,
+      "status": "WARN",
+      "notes": "required in mapping but nullable in DB"
+    },
+    {
+      "source_column": "InvoiceDate",
+      "target_column": "InvoiceDate",
+      "mapping_type": "date",
+      "source_type": "date",
+      "target_type": "date",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": true,
+      "compared": true,
+      "status": "WARN",
+      "notes": "required in mapping but nullable in DB"
+    },
+    {
+      "source_column": "DueDate",
+      "target_column": "DueDate",
+      "mapping_type": "date",
+      "source_type": "date",
+      "target_type": "date",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": false,
+      "compared": true,
+      "status": "OK",
+      "notes": ""
+    },
+    {
+      "source_column": "Amount",
+      "target_column": "Amount",
+      "mapping_type": "decimal(18,2)",
+      "source_type": "decimal(18,2)",
+      "target_type": "decimal(18,2)",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": true,
+      "compared": true,
+      "status": "WARN",
+      "notes": "required in mapping but nullable in DB"
+    },
+    {
+      "source_column": "Currency",
+      "target_column": "Currency",
+      "mapping_type": "char(3)",
+      "source_type": "char(3)",
+      "target_type": "char(3)",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": true,
+      "compared": true,
+      "status": "WARN",
+      "notes": "required in mapping but nullable in DB"
+    },
+    {
+      "source_column": "Status",
+      "target_column": "Status",
+      "mapping_type": "nvarchar(20)",
+      "source_type": "nvarchar(20)",
+      "target_type": "nvarchar(20)",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": false,
+      "compared": true,
+      "status": "OK",
+      "notes": ""
+    },
+    {
+      "source_column": "Notes",
+      "target_column": "Notes",
+      "mapping_type": "nvarchar(200)",
+      "source_type": "nvarchar(200)",
+      "target_type": "nvarchar(200)",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": false,
+      "compared": true,
+      "status": "OK",
+      "notes": ""
+    },
+    {
+      "source_column": "ExchangeRate",
+      "target_column": "ExchangeRate",
+      "mapping_type": "float",
+      "source_type": "float",
+      "target_type": "float",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": false,
+      "compared": true,
+      "status": "OK",
+      "notes": ""
+    },
+    {
+      "source_column": "UpdatedAt",
+      "target_column": "UpdatedAt",
+      "mapping_type": "datetime2(3)",
+      "source_type": "datetime2",
+      "target_type": "datetime2",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": false,
+      "compared": false,
+      "status": "OK",
+      "notes": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "VC-01",
+      "file": "01_row_count.sql",
+      "check": "Row count reconciliation",
+      "dimension": "Completeness",
+      "severity": "High",
+      "criterion": "row_count_diff = 0",
+      "sql_sha256": "26ef10d8bd459811a0969489470a2afa912db562fc0b251d0e91f24c9c56e183",
+      "status": "FAIL",
+      "defects": 12,
+      "observed": "source=5,001; target=4,989; diff=+12",
+      "rows_returned": 1,
+      "duration_ms": 2.7
+    },
+    {
+      "id": "VC-02",
+      "file": "02_null_checks.sql",
+      "check": "Mandatory attribute completeness",
+      "dimension": "Completeness",
+      "severity": "High",
+      "criterion": "null_count = 0 for every required column, on both sides",
+      "sql_sha256": "1cc20231df7648f36acf9316b24564a00ce97c3ed12c5e8b034228c05590807c",
+      "status": "FAIL",
+      "defects": 4,
+      "observed": "source.CustomerNo=1 NULL; target.Currency=1 NULL; target.InvoiceID=2 NULL",
+      "rows_returned": 20,
+      "duration_ms": 44.2
+    },
+    {
+      "id": "VC-03",
+      "file": "03_duplicate_checks.sql",
+      "check": "Primary key uniqueness",
+      "dimension": "Uniqueness",
+      "severity": "Critical",
+      "criterion": "0 rows returned",
+      "sql_sha256": "daa5d7fb9a0ba0eda5be36212f3ebede79adeaa4048eef781e5919f13a182b76",
+      "status": "FAIL",
+      "defects": 4,
+      "observed": "4 duplicated key(s); 4 surplus row(s)",
+      "rows_returned": 4,
+      "duration_ms": 6.3
+    },
+    {
+      "id": "VC-04",
+      "file": "04_missing_extra.sql",
+      "check": "Key reconciliation (missing / extra)",
+      "dimension": "Consistency",
+      "severity": "Critical",
+      "criterion": "0 rows returned",
+      "sql_sha256": "9ee167368aadffc43ad7c329ce1fd18d755120dbf334d5fbec5f7d382debe990",
+      "status": "FAIL",
+      "defects": 35,
+      "observed": "missing_in_target=25; extra_in_target=10",
+      "rows_returned": 35,
+      "duration_ms": 15.2
+    },
+    {
+      "id": "VC-05",
+      "file": "05_column_compare.sql",
+      "check": "Attribute value reconciliation",
+      "dimension": "Accuracy",
+      "severity": "High",
+      "criterion": "0 rows returned",
+      "sql_sha256": "c840229193392e3e65dc912926afe36f14744f7e393cb8bf089f9a1bc292d75c",
+      "status": "FAIL",
+      "defects": 35,
+      "observed": "35 attribute mismatch(es)",
+      "rows_returned": 35,
+      "duration_ms": 87.3
+    }
+  ],
+  "reconciliation": {
+    "src_distinct_keys": 5000,
+    "tgt_distinct_keys": 4985,
+    "matched_keys": 4975,
+    "missing_in_target": 25,
+    "extra_in_target": 10,
+    "keys_with_mismatch": 35,
+    "exact_match_keys": 4940,
+    "key_coverage_pct": 99.5,
+    "exact_match_pct": 98.8,
+    "attribute_cells_compared": 39800,
+    "attribute_mismatches": 35,
+    "column_breakdown": [
+      {
+        "column": "CustomerNo",
+        "mismatches": 1,
+        "mismatch_pct_of_matched": 0.02
+      },
+      {
+        "column": "InvoiceDate",
+        "mismatches": 5,
+        "mismatch_pct_of_matched": 0.1
+      },
+      {
+        "column": "DueDate",
+        "mismatches": 1,
+        "mismatch_pct_of_matched": 0.02
+      },
+      {
+        "column": "Amount",
+        "mismatches": 20,
+        "mismatch_pct_of_matched": 0.4
+      },
+      {
+        "column": "Currency",
+        "mismatches": 1,
+        "mismatch_pct_of_matched": 0.02
+      },
+      {
+        "column": "Status",
+        "mismatches": 1,
+        "mismatch_pct_of_matched": 0.02
+      },
+      {
+        "column": "Notes",
+        "mismatches": 5,
+        "mismatch_pct_of_matched": 0.1
+      },
+      {
+        "column": "ExchangeRate",
+        "mismatches": 1,
+        "mismatch_pct_of_matched": 0.02
+      }
+    ]
+  },
+  "overall": "FAIL",
+  "preflight_errors": [],
+  "finished": "2026-11-11T16:49:27+05:30",
+  "duration_s": 0.44
+}

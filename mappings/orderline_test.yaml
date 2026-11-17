@@ -1,0 +1,22 @@
+# Mapping for OrderLine validation (stg -> dw).
+# Built from INFORMATION_SCHEMA.COLUMNS supplied by the user. Key given by the user: OrderID + LineNo.
+table: orderline_test
+dialect: sqlserver            # T-SQL, SQL Server 2016+
+source: stg.OrderLine
+target: dw.OrderLine
+
+key:
+  - OrderID
+  - LineNo
+
+columns:
+  - { name: OrderID,     type: "int",           required: true,  compare: false }   # key
+  - { name: LineNo,      type: "int",           required: true,  compare: false }   # key
+  - { name: ProductCode, type: "nvarchar(30)",  required: true,  compare: true }
+  - { name: Qty,         type: "int",           required: true,  compare: true }
+  - { name: UnitPrice,   type: "decimal(18,2)", required: true,  compare: true }
+  - { name: Discount,    type: "float",         required: false, compare: true }
+  - { name: ShipDate,    type: "datetime2",     required: false, compare: true }
+
+column_map:
+  LineNo: LineNumber

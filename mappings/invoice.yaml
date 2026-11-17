@@ -1,0 +1,23 @@
+# Mapping for the Invoice sandbox test (test_data/03_create_invoice_test_data.sql).
+# Covers: a renamed target column, a column excluded from comparison, and mixed data types.
+table: invoice
+dialect: sqlserver
+source: src.Invoice
+target: tgt.Invoice
+
+key: [InvoiceID]
+
+columns:
+  - { name: InvoiceID,    type: "int",           required: true,  compare: false }   # key
+  - { name: CustomerNo,   type: "varchar(20)",   required: true,  compare: true }
+  - { name: InvoiceDate,  type: "date",          required: true,  compare: true }
+  - { name: DueDate,      type: "date",          required: false, compare: true }
+  - { name: Amount,       type: "decimal(18,2)", required: true,  compare: true }
+  - { name: Currency,     type: "char(3)",       required: true,  compare: true }
+  - { name: Status,       type: "nvarchar(20)",  required: false, compare: true }
+  - { name: Notes,        type: "nvarchar(200)", required: false, compare: true }
+  - { name: ExchangeRate, type: "float",         required: false, compare: true }
+  - { name: UpdatedAt,    type: "datetime2(3)",  required: false, compare: false }   # audit column, not compared
+
+column_map:
+  CustomerNo: CustomerNumber

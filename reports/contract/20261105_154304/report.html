@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Validation: contract</title>
+<style>
+:root { --bg:#f7f7f5; --fg:#1d1d1f; --muted:#6b6b70; --card:#fff; --line:#e3e3e0;
+        --pass:#1a7f37; --pass-bg:#dcf5e3; --fail:#b42318; --fail-bg:#fde4e1; --err:#8a5a00; --err-bg:#fff1cc;
+        --info:#1f5fa8; --info-bg:#e1ecfa; }
+@media (prefers-color-scheme: dark) { :root { --bg:#141416; --fg:#ececec; --muted:#9a9aa0; --card:#1d1d20; --line:#2e2e33;
+        --pass:#6fdc8c; --pass-bg:#173d24; --fail:#ff8a7f; --fail-bg:#4a1c18; --err:#ffd166; --err-bg:#3d3112;
+        --info:#8ab4f8; --info-bg:#1c2b44; } }
+* { box-sizing:border-box }
+body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:24px 16px 64px; }
+h1 { font-size:24px; margin:0 0 4px } h2 { font-size:18px; margin:32px 0 12px } h3 { font-size:15px; margin:0 0 8px }
+.muted { color:var(--muted) } .num { text-align:right; font-variant-numeric:tabular-nums }
+.grid { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+.card, section { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; }
+section { margin-bottom:12px }
+.big { font-size:20px; font-weight:600; margin:4px 0 8px }
+.tiles { display:flex; gap:12px; flex-wrap:wrap; margin:16px 0 }
+.tile { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 16px; min-width:110px }
+.tile b { display:block; font-size:22px }
+.badge { display:inline-block; padding:1px 8px; border-radius:999px; font-size:12px; font-weight:600 }
+.badge.pass { color:var(--pass); background:var(--pass-bg) } .badge.fail { color:var(--fail); background:var(--fail-bg) }
+.badge.error { color:var(--err); background:var(--err-bg) } .badge.info { color:var(--info); background:var(--info-bg) }
+.overall { font-size:14px; padding:3px 12px; vertical-align:middle; margin-left:8px }
+.scroll { overflow-x:auto }
+table { border-collapse:collapse; width:100%; font-size:13px }
+th, td { text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); white-space:nowrap }
+th { color:var(--muted); font-weight:600 }
+td.null { color:var(--muted); font-style:italic }
+code, pre { font-family:Consolas,ui-monospace,monospace; font-size:12px }
+pre { background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:12px; overflow-x:auto }
+details summary { cursor:pointer; color:var(--muted); margin-top:8px }
+.err { color:var(--fail) } .errbox { border-color:var(--fail); margin-bottom:12px }
+a { color:inherit }
+</style></head><body><main>
+<h1>Validation report: contract <span class="badge overall fail">FAIL</span></h1>
+<p class="muted">Server <b>PSDLAP332</b> · database <b>ValidationSandbox</b>
+ · login AzureAD\DebarishaMukherjee · SQL Server 17.0.1145.4<br>
+Mapping <code>mappings/contract.yaml</code> · run 2026-11-05T15:43:04 → 2026-11-05T15:43:04</p>
+<div class="tiles"><div class="tile"><b>0</b><span class="muted">passed</span></div>
+<div class="tile"><b>5</b><span class="muted">failed</span></div>
+<div class="tile"><b>0</b><span class="muted">errors</span></div></div>
+
+<h2>Input</h2><div class="grid"><div class="card"><h3>Source: <code>src.Contract</code></h3><p class="big">9 rows</p><div class="scroll"><table><thead><tr><th>column</th><th>type</th><th>nullable</th></tr></thead><tbody><tr><td>ContractID</td><td>int</td><td>yes</td></tr><tr><td>CustomerID</td><td>int</td><td>yes</td></tr><tr><td>StartDate</td><td>date</td><td>yes</td></tr><tr><td>EndDate</td><td>date</td><td>yes</td></tr><tr><td>Amount</td><td>decimal(18,2)</td><td>yes</td></tr><tr><td>Status</td><td>nvarchar(20)</td><td>yes</td></tr></tbody></table></div></div><div class="card"><h3>Target: <code>tgt.Contract</code></h3><p class="big">10 rows</p><div class="scroll"><table><thead><tr><th>column</th><th>type</th><th>nullable</th></tr></thead><tbody><tr><td>ContractID</td><td>int</td><td>yes</td></tr><tr><td>CustomerID</td><td>int</td><td>yes</td></tr><tr><td>StartDate</td><td>date</td><td>yes</td></tr><tr><td>EndDate</td><td>date</td><td>yes</td></tr><tr><td>Amount</td><td>decimal(18,2)</td><td>yes</td></tr><tr><td>Status</td><td>nvarchar(20)</td><td>yes</td></tr></tbody></table></div></div></div>
+<h2>Output: summary</h2>
+<div class="card scroll"><table><thead><tr><th>File</th><th>What it checks</th><th>Pass rule</th><th>Status</th><th>Result</th><th>Seconds</th></tr></thead>
+<tbody><tr><td><a href="#01_row_count.sql">01_row_count.sql</a></td><td>Total rows, source vs target</td><td>row_count_diff = 0</td><td><span class="badge fail">FAIL</span></td><td>source 9 / target 10 / diff -1</td><td class="num">0.002</td></tr><tr><td><a href="#02_null_checks.sql">02_null_checks.sql</a></td><td>NULLs per column; required columns flagged</td><td>0 NULLs in required columns</td><td><span class="badge fail">FAIL</span></td><td>target.CustomerID: 1 NULL</td><td class="num">0.009</td></tr><tr><td><a href="#03_duplicate_checks.sql">03_duplicate_checks.sql</a></td><td>Keys appearing more than once, per side</td><td>No rows</td><td><span class="badge fail">FAIL</span></td><td>1 row(s) returned</td><td class="num">0.01</td></tr><tr><td><a href="#04_missing_extra.sql">04_missing_extra.sql</a></td><td>Keys present on only one side</td><td>No rows</td><td><span class="badge fail">FAIL</span></td><td>2 row(s) returned</td><td class="num">0.009</td></tr><tr><td><a href="#05_column_compare.sql">05_column_compare.sql</a></td><td>Differing values on matched keys</td><td>No rows</td><td><span class="badge fail">FAIL</span></td><td>4 row(s) returned</td><td class="num">0.02</td></tr></tbody></table></div>
+<h2>Output: details</h2><section id="01_row_count.sql"><h3>01_row_count.sql: Row count</h3><p><span class="badge fail">FAIL</span> source 9 / target 10 / diff -1</p><div class="scroll"><table><thead><tr><th>src_row_count</th><th>tgt_row_count</th><th>row_count_diff</th><th>status</th></tr></thead><tbody><tr><td>9</td><td>10</td><td>-1</td><td><span class="badge fail">FAIL</span></td></tr></tbody></table></div><details><summary>SQL executed</summary><pre>/* 01_row_count.sql
+   Mapping : mappings/contract.yaml  (dialect: sqlserver)
+   Source  : src.Contract
+   Target  : tgt.Contract
+   Check   : Total row count, source vs target.
+   PASS    : One row with row_count_diff = 0 (status = &#x27;PASS&#x27;).
+   NOTE    : Generated by generator/generate_sql.py. Not executed. Do not edit by hand;
+             change the mapping and regenerate. */
+
+SELECT
+    s.src_row_count,
+    t.tgt_row_count,
+    s.src_row_count - t.tgt_row_count AS row_count_diff,
+    CASE WHEN s.src_row_count = t.tgt_row_count THEN &#x27;PASS&#x27; ELSE &#x27;FAIL&#x27; END AS status
+FROM       (SELECT COUNT_BIG(*) AS src_row_count FROM [src].[Contract]) AS s
+CROSS JOIN (SELECT COUNT_BIG(*) AS tgt_row_count FROM [tgt].[Contract]) AS t;
+</pre></details></section><section id="02_null_checks.sql"><h3>02_null_checks.sql: NULL checks</h3><p><span class="badge fail">FAIL</span> target.CustomerID: 1 NULL</p><div class="scroll"><table><thead><tr><th>side</th><th>column_name</th><th>is_required</th><th>null_count</th><th>total_rows</th><th>status</th></tr></thead><tbody><tr><td>source</td><td>Amount</td><td>1</td><td>0</td><td>9</td><td><span class="badge pass">PASS</span></td></tr><tr><td>source</td><td>ContractID</td><td>1</td><td>0</td><td>9</td><td><span class="badge pass">PASS</span></td></tr><tr><td>source</td><td>CustomerID</td><td>1</td><td>0</td><td>9</td><td><span class="badge pass">PASS</span></td></tr><tr><td>source</td><td>StartDate</td><td>1</td><td>0</td><td>9</td><td><span class="badge pass">PASS</span></td></tr><tr><td>source</td><td>EndDate</td><td>0</td><td>3</td><td>9</td><td><span class="badge info">INFO</span></td></tr><tr><td>source</td><td>Status</td><td>0</td><td>1</td><td>9</td><td><span class="badge info">INFO</span></td></tr><tr><td>target</td><td>Amount</td><td>1</td><td>0</td><td>10</td><td><span class="badge pass">PASS</span></td></tr><tr><td>target</td><td>ContractID</td><td>1</td><td>0</td><td>10</td><td><span class="badge pass">PASS</span></td></tr><tr><td>target</td><td>CustomerID</td><td>1</td><td>1</td><td>10</td><td><span class="badge fail">FAIL</span></td></tr><tr><td>target</td><td>StartDate</td><td>1</td><td>0</td><td>10</td><td><span class="badge pass">PASS</span></td></tr><tr><td>target</td><td>EndDate</td><td>0</td><td>2</td><td>10</td><td><span class="badge info">INFO</span></td></tr><tr><td>target</td><td>Status</td><td>0</td><td>1</td><td>10</td><td><span class="badge info">INFO</span></td></tr></tbody></table></div><details><summary>SQL executed</summary><pre>/* 02_null_checks.sql
+   Mapping : mappings/contract.yaml  (dialect: sqlserver)
+   Source  : src.Contract
+   Target  : tgt.Contract
+   Check   : NULL count per column on each side.
+   PASS    : Every row with is_required = 1 has null_count = 0 (status = &#x27;PASS&#x27;).
+   NOTE    : Generated by generator/generate_sql.py. Not executed. Do not edit by hand;
+             change the mapping and regenerate.
+             Required: ContractID, CustomerID, StartDate, Amount
+             Optional (INFO only): EndDate, Status */
+
+WITH src_nulls AS (
+    SELECT
+        COUNT_BIG(*) AS total_rows,
+        SUM(CASE WHEN [ContractID] IS NULL THEN 1 ELSE 0 END) AS c0,
+        SUM(CASE WHEN [CustomerID] IS NULL THEN 1 ELSE 0 END) AS c1,
+        SUM(CASE WHEN [StartDate] IS NULL THEN 1 ELSE 0 END) AS c2,
+        SUM(CASE WHEN [EndDate] IS NULL THEN 1 ELSE 0 END) AS c3,
+        SUM(CASE WHEN [Amount] IS NULL THEN 1 ELSE 0 END) AS c4,
+        SUM(CASE WHEN [Status] IS NULL THEN 1 ELSE 0 END) AS c5
+    FROM [src].[Contract]
+),
+tgt_nulls AS (
+    SELECT
+        COUNT_BIG(*) AS total_rows,
+        SUM(CASE WHEN [ContractID] IS NULL THEN 1 ELSE 0 END) AS c0,
+        SUM(CASE WHEN [CustomerID] IS NULL THEN 1 ELSE 0 END) AS c1,
+        SUM(CASE WHEN [StartDate] IS NULL THEN 1 ELSE 0 END) AS c2,
+        SUM(CASE WHEN [EndDate] IS NULL THEN 1 ELSE 0 END) AS c3,
+        SUM(CASE WHEN [Amount] IS NULL THEN 1 ELSE 0 END) AS c4,
+        SUM(CASE WHEN [Status] IS NULL THEN 1 ELSE 0 END) AS c5
+    FROM [tgt].[Contract]
+),
+unpivoted AS (
+    SELECT &#x27;source&#x27; AS side, v.column_name, v.is_required, ISNULL(v.null_count, 0) AS null_count, n.total_rows
+    FROM src_nulls AS n
+    CROSS APPLY (VALUES
+        (&#x27;ContractID&#x27;, 1, n.c0),
+        (&#x27;CustomerID&#x27;, 1, n.c1),
+        (&#x27;StartDate&#x27;, 1, n.c2),
+        (&#x27;EndDate&#x27;, 0, n.c3),
+        (&#x27;Amount&#x27;, 1, n.c4),
+        (&#x27;Status&#x27;, 0, n.c5)
+    ) AS v(column_name, is_required, null_count)
+    UNION ALL
+    SELECT &#x27;target&#x27; AS side, v.column_name, v.is_required, ISNULL(v.null_count, 0) AS null_count, n.total_rows
+    FROM tgt_nulls AS n
+    CROSS APPLY (VALUES
+        (&#x27;ContractID&#x27;, 1, n.c0),
+        (&#x27;CustomerID&#x27;, 1, n.c1),
+        (&#x27;StartDate&#x27;, 1, n.c2),
+        (&#x27;EndDate&#x27;, 0, n.c3),
+        (&#x27;Amount&#x27;, 1, n.c4),
+        (&#x27;Status&#x27;, 0, n.c5)
+    ) AS v(column_name, is_required, null_count)
+)
+SELECT
+    side,
+    column_name,
+    is_required,
+    null_count,
+    total_rows,
+    CASE
+        WHEN is_required = 1 AND null_count &gt; 0 THEN &#x27;FAIL&#x27;
+        WHEN is_required = 1                    THEN &#x27;PASS&#x27;
+        ELSE &#x27;INFO&#x27;
+    END AS status
+FROM unpivoted
+ORDER BY side, is_required DESC, column_name;
+</pre></details></section><section id="03_duplicate_checks.sql"><h3>03_duplicate_checks.sql: Duplicate keys</h3><p><span class="badge fail">FAIL</span> 1 row(s) returned</p><div class="scroll"><table><thead><tr><th>side</th><th>ContractID</th><th>occurrences</th></tr></thead><tbody><tr><td>target</td><td>3</td><td>2</td></tr></tbody></table></div><details><summary>SQL executed</summary><pre>/* 03_duplicate_checks.sql
+   Mapping : mappings/contract.yaml  (dialect: sqlserver)
+   Source  : src.Contract
+   Target  : tgt.Contract
+   Check   : Key values (ContractID) that appear more than once, on each side.
+   PASS    : No rows returned.
+   NOTE    : Generated by generator/generate_sql.py. Not executed. Do not edit by hand;
+             change the mapping and regenerate.
+             NULL keys are grouped together; they are also reported by 02_null_checks.sql. */
+
+SELECT &#x27;source&#x27; AS side, [ContractID], COUNT_BIG(*) AS occurrences
+FROM [src].[Contract]
+GROUP BY [ContractID]
+HAVING COUNT_BIG(*) &gt; 1
+
+UNION ALL
+
+SELECT &#x27;target&#x27; AS side, [ContractID], COUNT_BIG(*) AS occurrences
+FROM [tgt].[Contract]
+GROUP BY [ContractID]
+HAVING COUNT_BIG(*) &gt; 1
+
+ORDER BY side, [ContractID];
+</pre></details></section><section id="04_missing_extra.sql"><h3>04_missing_extra.sql: Missing / extra</h3><p><span class="badge fail">FAIL</span> 2 row(s) returned</p><div class="scroll"><table><thead><tr><th>ContractID</th><th>issue</th></tr></thead><tbody><tr><td>11</td><td>EXTRA_IN_TARGET</td></tr><tr><td>9</td><td>MISSING_IN_TARGET</td></tr></tbody></table></div><details><summary>SQL executed</summary><pre>/* 04_missing_extra.sql
+   Mapping : mappings/contract.yaml  (dialect: sqlserver)
+   Source  : src.Contract
+   Target  : tgt.Contract
+   Check   : Keys (ContractID) that exist on only one side. MISSING_IN_TARGET = source only; EXTRA_IN_TARGET = target only.
+   PASS    : No rows returned.
+   NOTE    : Generated by generator/generate_sql.py. Not executed. Do not edit by hand;
+             change the mapping and regenerate.
+             DISTINCT keys are used so duplicates (see 03) do not repeat rows here.
+             Rows with a NULL key never match; they are reported by 02_null_checks.sql. */
+
+WITH s AS (SELECT DISTINCT [ContractID] FROM [src].[Contract] WHERE [ContractID] IS NOT NULL),
+     t AS (SELECT DISTINCT [ContractID] FROM [tgt].[Contract] WHERE [ContractID] IS NOT NULL)
+SELECT
+    COALESCE(s.[ContractID], t.[ContractID]) AS [ContractID],
+    CASE WHEN t.[ContractID] IS NULL THEN &#x27;MISSING_IN_TARGET&#x27;
+         ELSE &#x27;EXTRA_IN_TARGET&#x27; END AS issue
+FROM s
+FULL OUTER JOIN t
+    ON s.[ContractID] = t.[ContractID]
+WHERE s.[ContractID] IS NULL
+   OR t.[ContractID] IS NULL
+ORDER BY issue, [ContractID];
+</pre></details></section><section id="05_column_compare.sql"><h3>05_column_compare.sql: Column compare</h3><p><span class="badge fail">FAIL</span> 4 row(s) returned</p><div class="scroll"><table><thead><tr><th>ContractID</th><th>column_name</th><th>src_value</th><th>tgt_value</th></tr></thead><tbody><tr><td>6</td><td>CustomerID</td><td>106</td><td class="null">NULL</td></tr><tr><td>7</td><td>Amount</td><td>100.00</td><td>150.00</td></tr><tr><td>8</td><td>EndDate</td><td class="null">NULL</td><td>2025-07-31</td></tr><tr><td>8</td><td>Status</td><td>Pending</td><td>Closed</td></tr></tbody></table></div><details><summary>SQL executed</summary><pre>/* 05_column_compare.sql
+   Mapping : mappings/contract.yaml  (dialect: sqlserver)
+   Source  : src.Contract
+   Target  : tgt.Contract
+   Check   : For keys on both sides, compares CustomerID, StartDate, EndDate, Amount, Status value by value.
+   PASS    : No rows returned. Each returned row is one (key, column) mismatch.
+   NOTE    : Generated by generator/generate_sql.py. Not executed. Do not edit by hand;
+             change the mapping and regenerate.
+             NULL-safe: NULL vs NULL matches; NULL vs a value is a mismatch.
+             Values compared as NVARCHAR: dates use ISO style 121, float/real use style 3.
+             Trailing spaces are ignored and case follows the database collation.
+             If keys are duplicated (see 03), result rows multiply. */
+
+SELECT
+    s.[ContractID],
+    v.column_name,
+    v.src_value,
+    v.tgt_value
+FROM [src].[Contract] AS s
+INNER JOIN [tgt].[Contract] AS t
+    ON s.[ContractID] = t.[ContractID]
+CROSS APPLY (VALUES
+    (&#x27;CustomerID&#x27;, CAST(s.[CustomerID] AS NVARCHAR(MAX)), CAST(t.[CustomerID] AS NVARCHAR(MAX))),
+    (&#x27;StartDate&#x27;,  CONVERT(NVARCHAR(40), s.[StartDate], 121), CONVERT(NVARCHAR(40), t.[StartDate], 121)),
+    (&#x27;EndDate&#x27;,    CONVERT(NVARCHAR(40), s.[EndDate], 121), CONVERT(NVARCHAR(40), t.[EndDate], 121)),
+    (&#x27;Amount&#x27;,     CAST(s.[Amount] AS NVARCHAR(MAX)), CAST(t.[Amount] AS NVARCHAR(MAX))),
+    (&#x27;Status&#x27;,     CAST(s.[Status] AS NVARCHAR(MAX)), CAST(t.[Status] AS NVARCHAR(MAX)))
+) AS v(column_name, src_value, tgt_value)
+WHERE EXISTS (SELECT v.src_value EXCEPT SELECT v.tgt_value)   -- NULL-safe &quot;is different&quot;
+ORDER BY s.[ContractID], v.column_name;
+</pre></details></section>
+</main></body></html>

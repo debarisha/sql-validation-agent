@@ -1,0 +1,352 @@
+{
+  "run_id": "orderline_test-20261110T160614",
+  "tool": "sql_validation_generator 1.1.0",
+  "table": "orderline_test",
+  "mapping": "mappings/orderline_test.yaml",
+  "mapping_sha256": "45a12745661bb69b5cbff17f5035e7075795c54bbccff8f3b0d1817ae897b82f",
+  "scope": {
+    "source": "stg.OrderLine",
+    "target": "dw.OrderLine",
+    "key": [
+      "OrderID",
+      "LineNo"
+    ],
+    "required": [
+      "OrderID",
+      "LineNo",
+      "ProductCode",
+      "Qty",
+      "UnitPrice"
+    ],
+    "compared": [
+      "ProductCode",
+      "Qty",
+      "UnitPrice",
+      "Discount",
+      "ShipDate"
+    ],
+    "column_map": {
+      "LineNo": "LineNumber"
+    }
+  },
+  "environment": {
+    "server_requested": "localhost",
+    "database": "ValidationSandbox",
+    "client_host": "PSDLAP332",
+    "python": "3.14.7",
+    "pyodbc": "5.3.0",
+    "odbc_driver": "ODBC Driver 18 for SQL Server",
+    "server_name": "PSDLAP332",
+    "server_version": "17.0.1145.4",
+    "product_level": "RTM",
+    "edition": "Enterprise Developer Edition (64-bit)",
+    "collation": "Latin1_General_CI_AI",
+    "login": "AzureAD\\DebarishaMukherjee",
+    "rcsi": "RCSI off"
+  },
+  "started": "2026-11-10T16:06:14+05:30",
+  "input": {
+    "source": {
+      "table": "stg.OrderLine",
+      "exists": true,
+      "row_count": 4,
+      "columns": [
+        {
+          "name": "OrderID",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "LineNo",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "ProductCode",
+          "type": "nvarchar(30)",
+          "nullable": true
+        },
+        {
+          "name": "Qty",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "UnitPrice",
+          "type": "decimal(18,2)",
+          "nullable": true
+        },
+        {
+          "name": "Discount",
+          "type": "float",
+          "nullable": true
+        },
+        {
+          "name": "ShipDate",
+          "type": "datetime2",
+          "nullable": true
+        }
+      ],
+      "missing_columns": []
+    },
+    "target": {
+      "table": "dw.OrderLine",
+      "exists": true,
+      "row_count": 5,
+      "columns": [
+        {
+          "name": "OrderID",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "LineNumber",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "ProductCode",
+          "type": "nvarchar(30)",
+          "nullable": true
+        },
+        {
+          "name": "Qty",
+          "type": "int",
+          "nullable": true
+        },
+        {
+          "name": "UnitPrice",
+          "type": "decimal(18,2)",
+          "nullable": true
+        },
+        {
+          "name": "Discount",
+          "type": "float",
+          "nullable": true
+        },
+        {
+          "name": "ShipDate",
+          "type": "datetime2",
+          "nullable": true
+        }
+      ],
+      "missing_columns": []
+    }
+  },
+  "schema_comparison": [
+    {
+      "source_column": "OrderID",
+      "target_column": "OrderID",
+      "mapping_type": "int",
+      "source_type": "int",
+      "target_type": "int",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": true,
+      "required": true,
+      "compared": false,
+      "status": "WARN",
+      "notes": "required in mapping but nullable in DB"
+    },
+    {
+      "source_column": "LineNo",
+      "target_column": "LineNumber",
+      "mapping_type": "int",
+      "source_type": "int",
+      "target_type": "int",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": true,
+      "required": true,
+      "compared": false,
+      "status": "WARN",
+      "notes": "required in mapping but nullable in DB"
+    },
+    {
+      "source_column": "ProductCode",
+      "target_column": "ProductCode",
+      "mapping_type": "nvarchar(30)",
+      "source_type": "nvarchar(30)",
+      "target_type": "nvarchar(30)",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": true,
+      "compared": true,
+      "status": "WARN",
+      "notes": "required in mapping but nullable in DB"
+    },
+    {
+      "source_column": "Qty",
+      "target_column": "Qty",
+      "mapping_type": "int",
+      "source_type": "int",
+      "target_type": "int",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": true,
+      "compared": true,
+      "status": "WARN",
+      "notes": "required in mapping but nullable in DB"
+    },
+    {
+      "source_column": "UnitPrice",
+      "target_column": "UnitPrice",
+      "mapping_type": "decimal(18,2)",
+      "source_type": "decimal(18,2)",
+      "target_type": "decimal(18,2)",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": true,
+      "compared": true,
+      "status": "WARN",
+      "notes": "required in mapping but nullable in DB"
+    },
+    {
+      "source_column": "Discount",
+      "target_column": "Discount",
+      "mapping_type": "float",
+      "source_type": "float",
+      "target_type": "float",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": false,
+      "compared": true,
+      "status": "OK",
+      "notes": ""
+    },
+    {
+      "source_column": "ShipDate",
+      "target_column": "ShipDate",
+      "mapping_type": "datetime2",
+      "source_type": "datetime2",
+      "target_type": "datetime2",
+      "source_nullable": true,
+      "target_nullable": true,
+      "is_key": false,
+      "required": false,
+      "compared": true,
+      "status": "OK",
+      "notes": ""
+    }
+  ],
+  "checks": [
+    {
+      "id": "VC-01",
+      "file": "01_row_count.sql",
+      "check": "Row count reconciliation",
+      "dimension": "Completeness",
+      "severity": "High",
+      "criterion": "row_count_diff = 0",
+      "sql_sha256": "d450d7518b6e4136ed5a547c99dfa6d267963b20ae8a87498d67eedbfbcfc44e",
+      "status": "FAIL",
+      "defects": 1,
+      "observed": "source=4; target=5; diff=-1",
+      "rows_returned": 1,
+      "duration_ms": 3.1
+    },
+    {
+      "id": "VC-02",
+      "file": "02_null_checks.sql",
+      "check": "Mandatory attribute completeness",
+      "dimension": "Completeness",
+      "severity": "High",
+      "criterion": "null_count = 0 for every required column, on both sides",
+      "sql_sha256": "2be600c26303b68b54f32a2dd86d75cc66408df10c41b0dc9aaa2ba5c9407a2d",
+      "status": "FAIL",
+      "defects": 1,
+      "observed": "target.ProductCode=1 NULL",
+      "rows_returned": 14,
+      "duration_ms": 11.0
+    },
+    {
+      "id": "VC-03",
+      "file": "03_duplicate_checks.sql",
+      "check": "Primary key uniqueness",
+      "dimension": "Uniqueness",
+      "severity": "Critical",
+      "criterion": "0 rows returned",
+      "sql_sha256": "0d98e75c10909e59a314b339621bd01227a1787d1dee66fa501cff34e186ab46",
+      "status": "FAIL",
+      "defects": 1,
+      "observed": "1 duplicated key(s); 1 surplus row(s)",
+      "rows_returned": 1,
+      "duration_ms": 3.2
+    },
+    {
+      "id": "VC-04",
+      "file": "04_missing_extra.sql",
+      "check": "Key reconciliation (missing / extra)",
+      "dimension": "Consistency",
+      "severity": "Critical",
+      "criterion": "0 rows returned",
+      "sql_sha256": "2fecfbca3e928765907fc6db8cff421e5435f795dd63982e71b8e509a32569fe",
+      "status": "FAIL",
+      "defects": 2,
+      "observed": "missing_in_target=1; extra_in_target=1",
+      "rows_returned": 2,
+      "duration_ms": 6.1
+    },
+    {
+      "id": "VC-05",
+      "file": "05_column_compare.sql",
+      "check": "Attribute value reconciliation",
+      "dimension": "Accuracy",
+      "severity": "High",
+      "criterion": "0 rows returned",
+      "sql_sha256": "20e2b23560d5c628d22fea2ee3c47d3b293615dadfff8a7103379f71a929bd66",
+      "status": "FAIL",
+      "defects": 2,
+      "observed": "2 attribute mismatch(es)",
+      "rows_returned": 2,
+      "duration_ms": 9.9
+    }
+  ],
+  "reconciliation": {
+    "src_distinct_keys": 4,
+    "tgt_distinct_keys": 4,
+    "matched_keys": 3,
+    "missing_in_target": 1,
+    "extra_in_target": 1,
+    "keys_with_mismatch": 1,
+    "exact_match_keys": 2,
+    "key_coverage_pct": 75.0,
+    "exact_match_pct": 50.0,
+    "attribute_cells_compared": 15,
+    "attribute_mismatches": 2,
+    "column_breakdown": [
+      {
+        "column": "ProductCode",
+        "mismatches": 0,
+        "mismatch_pct_of_matched": 0.0
+      },
+      {
+        "column": "Qty",
+        "mismatches": 0,
+        "mismatch_pct_of_matched": 0.0
+      },
+      {
+        "column": "UnitPrice",
+        "mismatches": 0,
+        "mismatch_pct_of_matched": 0.0
+      },
+      {
+        "column": "Discount",
+        "mismatches": 1,
+        "mismatch_pct_of_matched": 33.33
+      },
+      {
+        "column": "ShipDate",
+        "mismatches": 1,
+        "mismatch_pct_of_matched": 33.33
+      }
+    ]
+  },
+  "overall": "FAIL",
+  "preflight_errors": [],
+  "finished": "2026-11-10T16:06:14+05:30",
+  "duration_s": 0.47
+}
